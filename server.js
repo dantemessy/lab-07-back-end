@@ -26,7 +26,7 @@ server.listen(PORT, () => console.log('Listening at port 3000'));
 
 
 server.get('/', (request, response) => {
-  response.status(200).send('App is working CLAAAAASS');
+  response.status(200).send('Lets Rock !!');
 });
 
 
@@ -92,10 +92,10 @@ function getWeatherData(lat, lng) {
 server.get('/events', eventHandler);
 
 function Event(day) {
-  this.link = day.link;
-  this.name = day.name;
-  this.event =day.event;
-  this.summary =day.event;
+  this.link = day.url;
+  this.name = day.title;
+  this.eventDate =day.start_time;
+  this.summary =day.description;
 }
 
 function eventHandler(request, response) {
@@ -113,10 +113,10 @@ function getEventData(lat, lng) {
   console.log(url);
   return superagent.get(url)
     .then((eventData) => {
-        let dataBase = JSON.parse(eventData.text);
-      console.log(dataBase.events.event[0].description);
-    //   let events = eventData.body.daily.data.map((day) => new Event(day));
-    //   return events;
+      let dataBase = JSON.parse(eventData.text);
+      //   console.log(dataBase.events.event[0].description);
+      let events = dataBase.events.event.map((day) => new Event(day));
+      return events;
     });
 }
 
